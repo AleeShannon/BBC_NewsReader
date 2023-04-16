@@ -43,6 +43,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String RSS_FEED_URL = "http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml";
+    private ArrayList<Headline> Headlines;
     ArrayList<String> titles = new ArrayList<>();
     ArrayList<String> links = new ArrayList<>();
     private DrawerLayout drawer;
@@ -77,9 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        ProcessInBackground processInBackground = new ProcessInBackground(titles, links);
-        processInBackground.execute();
-
+        new ProcessInBackground(this).execute(RSS_FEED_URL);
     }
 
     @Override
@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return null;
         }
     }
+    /*
     public class ProcessInBackground extends AsyncTask<Integer, Void, Exception> {
         ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
         Exception exception = null;
@@ -190,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         protected void onPostExecute(Exception s) {
             super.onPostExecute(s);
-            MyAdapter adapter = new MyAdapter(MainActivity.this, titles, links);
+            MyAdapter adapter = new MyAdapter(getApplicationContext(), Headlines);
             listView.setAdapter(adapter);
             progressDialog.dismiss();
 
@@ -210,3 +211,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
+*/}
