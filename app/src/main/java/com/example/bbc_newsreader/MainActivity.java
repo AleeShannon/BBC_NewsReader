@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private static final String RSS_FEED_URL = "http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml";
     private ArrayList<Headline> Headlines;
+    private FavoritesDb favoritesDb;
     ArrayList<String> titles = new ArrayList<>();
     ArrayList<String> links = new ArrayList<>();
     private DrawerLayout drawer;
@@ -118,97 +119,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public InputStream getInputStream(URL url){
-        try{
+    public InputStream getInputStream(URL url) {
+        try {
             return url.openConnection().getInputStream();
-        } catch (IOException e){
+        } catch (IOException e) {
             return null;
         }
     }
-    /*
-    public class ProcessInBackground extends AsyncTask<Integer, Void, Exception> {
-        ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
-        Exception exception = null;
-        ArrayList<String> titles;
-        ArrayList<String> links;
-
-        public ProcessInBackground(ArrayList<String> titles, ArrayList<String> links) {
-            this.titles = titles;
-            this.links = links;
-        }
-
-        @Override
-        protected Exception doInBackground(Integer...params) {
-            try {
-                URL url = new URL("http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml");
-
-                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-                factory.setNamespaceAware(false);
-                XmlPullParser xpp = factory.newPullParser();
-
-                xpp.setInput(url.openConnection().getInputStream(), "UTF_8");
-
-                boolean insideItem = false;
-                int eventType = xpp.getEventType();
-                while (eventType != XmlPullParser.END_DOCUMENT) {
-
-                    if (eventType == XmlPullParser.START_TAG) {
-
-                        if (xpp.getName().equalsIgnoreCase("item")) {
-                            insideItem = true;
-                        } else if (xpp.getName().equalsIgnoreCase("title")) {
-                            if (insideItem) {
-                                titles.add(xpp.nextText());
-                            }
-                        } else if (xpp.getName().equalsIgnoreCase("link")) {
-                            if (insideItem) {
-                                links.add(xpp.nextText());
-                            }
-                        }
-                        } else if (eventType == XmlPullParser.END_TAG && xpp.getName().equalsIgnoreCase("item")) {
-                            insideItem = false;
-                        }
-                        eventType = xpp.next();
-                    }
-
-            } catch (MalformedURLException e) {
-                exception = e;
-            } catch (XmlPullParserException e) {
-                exception = e;
-            } catch (IOException e) {
-                exception = e;
-            }
-            return exception;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog.setMessage("Loading Headlines");
-            progressDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(Exception s) {
-            super.onPostExecute(s);
-            MyAdapter adapter = new MyAdapter(getApplicationContext(), Headlines);
-            listView.setAdapter(adapter);
-            progressDialog.dismiss();
-
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String url = links.get(position);
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(url));
-                    startActivity(i);
-                }
-            });
-            listView.setAdapter(adapter);
-            progressDialog.dismiss();
-
-            }
-        }
-
+    public FavoritesDb getFavoritesDb() {
+        return favoritesDb;
     }
-*/}
+}

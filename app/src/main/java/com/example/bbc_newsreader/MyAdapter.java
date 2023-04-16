@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -71,6 +72,17 @@ public class MyAdapter extends BaseAdapter {
                 }
             }
         });
+
+        Button addFavoriteButton = (Button) rowView.findViewById(R.id.add_favorites_button);
+        addFavoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Add the corresponding Headline object to a list of favorites
+                FavoriteHeadlines.getInstance(context).addFavorite(headline);
+                Toast.makeText(context, "Added to Favorites", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         Button openButton = (Button) rowView.findViewById(R.id.open_article_button);
         openButton.setOnClickListener(new View.OnClickListener() {
