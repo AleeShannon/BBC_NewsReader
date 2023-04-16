@@ -14,6 +14,7 @@ public class FavoriteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup fragment_container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_favorites, fragment_container, false);
     }
+
 }
 
 

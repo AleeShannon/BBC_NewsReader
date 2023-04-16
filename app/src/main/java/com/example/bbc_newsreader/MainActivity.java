@@ -1,6 +1,8 @@
 package com.example.bbc_newsreader;
 
 import androidx.annotation.NonNull;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -8,16 +10,21 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -32,6 +39,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -175,7 +183,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
             progressDialog.setMessage("Loading Headlines");
             progressDialog.show();
         }
@@ -183,10 +190,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         protected void onPostExecute(Exception s) {
             super.onPostExecute(s);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
-                    android.R.layout.simple_list_item_1, titles);
+            MyAdapter adapter = new MyAdapter(MainActivity.this, titles, links);
             listView.setAdapter(adapter);
             progressDialog.dismiss();
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String url = links.get(position);
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                }
+            });
+            listView.setAdapter(adapter);
+            progressDialog.dismiss();
+
+            }
         }
+
     }
-}
