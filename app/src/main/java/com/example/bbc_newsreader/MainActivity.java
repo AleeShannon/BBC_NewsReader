@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import com.example.bbc_newsreader.FavoritesActivity;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -67,6 +70,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         new ProcessInBackground(this).execute(RSS_FEED_URL);
     }
+    private void showSnackbar(String message) {
+        Snackbar.make(drawer, message, Snackbar.LENGTH_LONG).show();
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -89,11 +95,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_help:
-                Toast.makeText(this, "Help", Toast.LENGTH_SHORT).show();
+                showHelpDialog();
+                showSnackbar("Help clicked");
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    private void showHelpDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Help");
+        builder.setMessage("Click a headline for more information, use the button options to open the article in a" +
+                "browser or add to favorites");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
     @Override
@@ -115,4 +135,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public FavoritesDb getFavoritesDb() {
         return favoritesDb;
     }
+
 }
