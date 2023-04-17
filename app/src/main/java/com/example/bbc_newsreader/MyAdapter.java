@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,10 +17,18 @@ public class MyAdapter extends BaseAdapter {
 
     private final Context context;
     private final ArrayList<Headline> headlines;
+    private ArrayList<Favorite> favorites = new ArrayList<>();
 
     public MyAdapter(Context context, ArrayList<Headline> headlines) {
         this.context = context;
         this.headlines = headlines;
+        this.favorites = favorites;
+      ;
+    }
+    public void setHeadlines(ArrayList<Headline> favorite) {
+        this.favorites.clear();
+        this.favorites.addAll(favorites);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -31,8 +38,11 @@ public class MyAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return headlines.get(position);
-
+        if (position < headlines.size()) {
+            return headlines.get(position);
+        } else {
+            return favorites.get(position - headlines.size());
+        }
     }
 
     @Override
@@ -73,17 +83,36 @@ public class MyAdapter extends BaseAdapter {
             }
         });
 
+        // initialize favorite button
         Button addFavoriteButton = (Button) rowView.findViewById(R.id.add_favorites_button);
         addFavoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Add the corresponding Headline object to a list of favorites
-                FavoriteHeadlines.getInstance(context).addFavorite(headline);
-                Toast.makeText(context, "Added to Favorites", Toast.LENGTH_SHORT).show();
+                // Download the headline and store it as a Favorite object
+                HeadlineDownloader downloader = new HeadlineDownloader(context);
+                downloader.downloadHeadline(headline.getLink(), new HeadlineDownloader.Callback() {
+                    @Override
+                    public void onHeadlineDownloaded(Headline downloadedHeadline) {
+                        Favorite favorite = new Favorite(downloadedHeadline.getTitle(),
+                                downloadedHeadline.getDate(), downloadedHeadline.getDescription(),
+                                downloadedHeadline.getLink());
+
+                        // Add the corresponding Favorite object to the list of favorites
+                        favorites.add(favorite);
+
+                        Toast.makeText(context, "Added to Favorites", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onDownloadFailed() {
+                        Toast.makeText(context, "Failed to download headline", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
 
+        // initialize open article button and onCLick
         Button openButton = (Button) rowView.findViewById(R.id.open_article_button);
         openButton.setOnClickListener(new View.OnClickListener() {
             @Override
