@@ -12,12 +12,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="BBC News Reader"
-        android:textColor="#0B0A0A" />
+        android:text="@string/bbc_header" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Version 1" />
+        android:text="@string/version" />
 
 </LinearLayout>

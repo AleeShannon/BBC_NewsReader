@@ -12,8 +12,8 @@ import java.util.ArrayList;
 public class FavoriteHeadlines {
     private static final String FILENAME = "favorite_headlines";
     private static FavoriteHeadlines instance;
-    private ArrayList<Headline> favorites;
-    private Context context;
+    private final ArrayList<Headline> favorites;
+    private final Context context;
 
     private FavoriteHeadlines(Context context) {
         this.context = context.getApplicationContext();

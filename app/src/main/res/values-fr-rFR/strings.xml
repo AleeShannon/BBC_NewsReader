@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BBCNewsReader</string>
+    <string name="nav_home">Maison</string>
+    <string name="nav_favorites">Favoris</string>
+    <string name="nav_other">"  Autre"</string>
+    <string name="nav_help">Aider</string>
+    <string name="nav_settings">Paramètres</string>
+    <string name="bbc_header">Lecteur de nouvelles de la BBC</string>
+    <string name="version">" Version 1"</string>
+    <string name="settings_page">Page de commentaire</string>
+    <string name="open_article">Ouvrir l\'article</string>
+    <string name="add_favorites">Ajouter à la page des paramètres des favoris</string>
+    <string name="help_main">Cliquez sur un titre pour plus d\'informations, utilisez les options du bouton pour ouvrir l\'article dans un navigateur ou l\'ajouter aux favoris</string>
+    <string name="volume">Volume</string>
+    <string name="button_save">Sauvegarder</string>
+    <string name="enable_notifications">Activer les notifications</string>
+    <string name="settings_title">Paramètres</string>
+    <string name="snackbar_help">Aide cliqué</string>
+    <string name="help_favorites">Cliquez sur Ajouter aux favoris sur la page d\'accueil pour stocker vos favoris ici. Supprimer avec le bouton à chaque fois !</string>
+    <string name="Exit">Sortie</string>
+    <string name="submit">"  Soumettre"</string>
+    <string name="leave_a_comment">Laissez un commentaire..</string>
+    <string name="help_comment">Entrez votre commentaire dans la case ci-dessous et appuyez sur Soumettre lorsque vous avez terminé !</string>
+</resources>

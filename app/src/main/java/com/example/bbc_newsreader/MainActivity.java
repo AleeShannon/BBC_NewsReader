@@ -1,8 +1,6 @@
 package com.example.bbc_newsreader;
 
 import androidx.annotation.NonNull;
-import com.example.bbc_newsreader.FavoritesActivity;
-
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,8 +15,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -28,14 +26,17 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String RSS_FEED_URL = "http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml";
     private ArrayList<Headline> Headlines;
-    private FavoritesDb favoritesDb;
+    private FavoritesDB favoritesDb;
     ArrayList<String> titles = new ArrayList<>();
     ArrayList<String> links = new ArrayList<>();
+    private ArrayList<String> dates = new ArrayList<>();
+    private ArrayList<String> descriptions = new ArrayList<>();
+
+
     private DrawerLayout drawer;
     ListView listView;
 
@@ -56,22 +57,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        listView = (ListView) findViewById(R.id.list_view);
-        titles = new ArrayList<String>();
-        links = new ArrayList<String>();
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Uri uri = Uri.parse(links.get(position));
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
+        listView = findViewById(R.id.list_view);
+        titles = new ArrayList<>();
+        links = new ArrayList<>();
+
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            Uri uri = Uri.parse(links.get(position));
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         });
+
+        // Initialize favoritesDb
+        favoritesDb = new FavoritesDB(this);
 
         new ProcessInBackground(this).execute(RSS_FEED_URL);
     }
-    private void showSnackbar(String message) {
-        Snackbar.make(drawer, message, Snackbar.LENGTH_LONG).show();
+
+    private void showSnackbar() {
+        Snackbar.make(drawer, R.string.snackbar_help, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -86,33 +89,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_favorites:
                 intent = new Intent(this, FavoritesActivity.class);
                 startActivity(intent);
-                finish();
                 break;
 
-            case R.id.nav_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new SettingsFragment()).commit();
+
+            case R.id.nav_comment:
+                Intent commentIntent = new Intent(this, CommentActivity.class);
+                startActivity(commentIntent);
                 break;
 
             case R.id.nav_help:
                 showHelpDialog();
-                showSnackbar("Help clicked");
+                showSnackbar();
+                break;
+
+            case R.id.nav_exit:
+                exitApp();
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    private void exitApp() {
+        finishAffinity(); // Finish all activities in the app's task stack
+        System.exit(0); // Terminate the app process
+    }
     private void showHelpDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Help");
-        builder.setMessage("Click a headline for more information, use the button options to open the article in a" +
-                "browser or add to favorites");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setMessage(getString(R.string.help_main));
+        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
         builder.create().show();
     }
 
@@ -132,8 +137,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return null;
         }
     }
-    public FavoritesDb getFavoritesDb() {
+
+    public FavoritesDB getFavoritesDb() {
         return favoritesDb;
+    }
+
+    public void updateListView(ArrayList<Headline> headlines) {
+        ArrayAdapter<Headline> adapter = new HeadlineAdapter(this, headlines, favoritesDb);
+        listView.setAdapter(adapter);
     }
 
 }

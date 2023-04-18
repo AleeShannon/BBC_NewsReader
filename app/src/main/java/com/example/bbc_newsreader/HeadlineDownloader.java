@@ -3,13 +3,7 @@ package com.example.bbc_newsreader;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
-
 import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -17,10 +11,7 @@ import okhttp3.Response;
 
 public class HeadlineDownloader {
 
-    private final Context context;
-
     public HeadlineDownloader(Context context) {
-        this.context = context;
     }
 
     public void downloadHeadline(String link, Callback callback) {
