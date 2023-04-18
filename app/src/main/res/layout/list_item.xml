@@ -26,27 +26,30 @@
         android:textSize="14sp"/>
 
     <TextView
-        android:id="@+id/link_textView"
+        android:id="@+id/link_TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp"/>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
-    <Button
-        android:id="@+id/open_article_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Open Article" />
+        android:textSize="14sp"
+        android:visibility="gone"/>
 
-    <!-- Add this Button inside the layout for a single article -->
-    <Button
-        android:id="@+id/add_favorites_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Favorite" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-</LinearLayout>
+        <Button
+            android:id="@+id/open_article_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Open Article" />
+
+        <!-- Add this Button inside the layout for a single article -->
+        <Button
+            android:id="@+id/add_favorites_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Favorite" />
+
+    </LinearLayout>
 
 </LinearLayout>

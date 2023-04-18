@@ -1,10 +1,10 @@
 package com.example.bbc_newsreader;
 
 public class Favorite {
-        private String title;
-        private String date;
-        private String description;
-        private String link;
+        private final String title;
+        private final String date;
+        private final String description;
+        private final String link;
 
         public Favorite(String title, String date, String description, String link) {
             this.title = title;

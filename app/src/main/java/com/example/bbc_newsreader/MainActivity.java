@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -40,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private DrawerLayout drawer;
     ListView listView;
-    private ArrayAdapter<Headline> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,17 +57,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        listView = (ListView) findViewById(R.id.list_view);
-        titles = new ArrayList<String>();
-        links = new ArrayList<String>();
+        listView = findViewById(R.id.list_view);
+        titles = new ArrayList<>();
+        links = new ArrayList<>();
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Uri uri = Uri.parse(links.get(position));
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            Uri uri = Uri.parse(links.get(position));
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         });
 
         // Initialize favoritesDb
@@ -78,8 +73,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         new ProcessInBackground(this).execute(RSS_FEED_URL);
     }
 
-    private void showSnackbar(String message) {
-        Snackbar.make(drawer, message, Snackbar.LENGTH_LONG).show();
+    private void showSnackbar() {
+        Snackbar.make(drawer, R.string.snackbar_help, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -97,31 +92,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
 
-            case R.id.nav_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new SettingsFragment()).commit();
+            case R.id.nav_comment:
+                Intent commentIntent = new Intent(this, CommentActivity.class);
+                startActivity(commentIntent);
                 break;
 
             case R.id.nav_help:
                 showHelpDialog();
-                showSnackbar("Help clicked");
+                showSnackbar();
+                break;
+
+            case R.id.nav_exit:
+                exitApp();
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
+    private void exitApp() {
+        finishAffinity(); // Finish all activities in the app's task stack
+        System.exit(0); // Terminate the app process
+    }
     private void showHelpDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Help");
-        builder.setMessage("Click a headline for more information, use the button options to open the article in a" +
-                "browser or add to favorites");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setMessage(getString(R.string.help_main));
+        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
         builder.create().show();
     }
 
@@ -147,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void updateListView(ArrayList<Headline> headlines) {
-        adapter = new HeadlineAdapter(this, headlines, favoritesDb);
+        ArrayAdapter<Headline> adapter = new HeadlineAdapter(this, headlines, favoritesDb);
         listView.setAdapter(adapter);
     }
 

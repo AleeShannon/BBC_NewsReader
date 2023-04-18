@@ -16,11 +16,11 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class ProcessInBackground extends AsyncTask<String, Void, ArrayList<Headline>> {
-    ProgressDialog progressDialog;
-    private MainActivity mActivity;
+    final ProgressDialog progressDialog;
+    private final MainActivity mActivity;
     Exception exception = null;
     ArrayList<Headline> Headlines;
-    ListView listView;
+    final ListView listView;
 
     public ProcessInBackground(MainActivity activity) {
         mActivity = activity;

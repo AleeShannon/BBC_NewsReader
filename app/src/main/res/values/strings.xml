@@ -1,14 +1,37 @@
 <resources>
     <string name="app_name">BBCNewsReader</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
 
     <!-- Navigation Drawer Items -->
     <string name="nav_home">Home</string>
     <string name="nav_favorites">Favorites</string>
     <string name="nav_other">Other</string>
     <string name="nav_help">Help</string>
-    <string name="nav_settings">Settings</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="nav_settings">Comments Page</string>
+
+    <!-- Header Items -->
+    <string name ="bbc_header"> BBC News Reader </string>
+    <string name ="version"> Version 1</string>
+
+    <!-- Snackbar -->
+    <string name="snackbar_help">Help clicked</string>
+
+    <string name ="settings_page">" Comment Page"</string>
+    <string name ="open_article"> Open Article </string>
+    <string name ="add_favorites"> Add to Favorites </string>
+
+    <!--Alert Dialog -->
+    <string name="volume">Volume</string>
+    <string name="button_save">Save</string>
+    <string name="enable_notifications">Enable notifications</string>
+    <string name="settings_title">Settings</string>
+
+    <!--Help -->
+    <string name="help_main">Click a headline for more information, use the button options to open the article in a browser or add to favorites"</string>
+    <string name ="help_favorites">Click add to Favorites on home Page to store your favorites here. Delete with the button whenever!"</string>
+    <string name="Exit">Exit</string>
+    <string name="submit">Submit</string>
+    <string name="leave_a_comment">Leave a comment...</string>
+    <string name="help_comment">Enter your comment in the box below and hit submit when you\'re done!</string>
 </resources>
