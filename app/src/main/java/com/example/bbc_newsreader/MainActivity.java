@@ -26,6 +26,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
+/**
+ * The main activity of the newsreader app, displaying a list of news headlines.
+ */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String RSS_FEED_URL = "http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml";
@@ -40,6 +43,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     ListView listView;
 
+    /**
+     * Called when the activity is starting.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down, this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,10 +81,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         new ProcessInBackground(this).execute(RSS_FEED_URL);
     }
 
+    /**
+     * Displays a help Snackbar.
+     */
     private void showSnackbar() {
         Snackbar.make(drawer, R.string.snackbar_help, Snackbar.LENGTH_LONG).show();
     }
 
+    /**
+     * Called when a navigation item is selected.
+     *
+     * @param item The selected MenuItem.
+     * @return true to display the item as the selected item, false if the item should not be selected.
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -109,10 +126,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    /**
+     * Exits the app.
+     */
     private void exitApp() {
         finishAffinity(); // Finish all activities in the app's task stack
         System.exit(0); // Terminate the app process
     }
+    /**
+     * Displays a help dialog.
+     */
     private void showHelpDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Help");
@@ -120,7 +143,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
         builder.create().show();
     }
-
+    /**
+     * Called when the back button is pressed.
+     */
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -130,6 +155,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /**
+     * Returns an InputStream for the specified URL.
+     *
+     * @param url The URL to get the InputStream for.
+     * @return The InputStream, or null if an error occurs.
+     */
     public InputStream getInputStream(URL url) {
         try {
             return url.openConnection().getInputStream();
@@ -138,10 +169,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+
+    /**
+     * Gets the FavoritesDB instance.
+     *
+     * @return The FavoritesDB instance.
+     */
     public FavoritesDB getFavoritesDb() {
         return favoritesDb;
     }
 
+    /**
+     * Updates the ListView with the given headlines.
+     *
+     * @param headlines The headlines to display in the ListView.
+     */
     public void updateListView(ArrayList<Headline> headlines) {
         ArrayAdapter<Headline> adapter = new HeadlineAdapter(this, headlines, favoritesDb);
         listView.setAdapter(adapter);

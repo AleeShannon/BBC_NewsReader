@@ -7,7 +7,9 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
+/**
+ * A parser for extracting headlines from an XML document.
+ */
 public class MyParser {
 
     private static final String TAG_TITLE = "title";
@@ -16,6 +18,14 @@ public class MyParser {
     private static final String TAG_PUB_DATE = "pubDate";
     private static final String TAG_ITEM = "item";
 
+    /**
+     * Parses the given XmlPullParser and returns a list of headlines.
+     *
+     * @param parser The XmlPullParser instance to parse.
+     * @return An ArrayList of Headline objects.
+     * @throws XmlPullParserException if there is an issue with parsing the XML.
+     * @throws IOException if there is an issue with reading the input stream.
+     */
     public static ArrayList<Headline> parse(XmlPullParser parser) throws XmlPullParserException, IOException {
         ArrayList<Headline> Headlines = new ArrayList<>();
 

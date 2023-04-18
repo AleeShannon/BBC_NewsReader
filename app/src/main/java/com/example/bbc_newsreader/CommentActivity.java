@@ -26,16 +26,41 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-
+/**
+ * CommentActivity class represents the activity for user comments.
+ */
 public class CommentActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+    /**
+     * EditText field for entering the comment text.
+     */
     private EditText commentEditText;
+    /**
+     * Button for submitting the comment.
+     */
     private Button submitButton;
+    /**
+     * List of comments.
+     */
     private ArrayList<Comment> commentsList;
+    /**
+     * Adapter for displaying comments in the list.
+     */
     private MyListAdapter myListAdapter;
+    /**
+     * ListView for displaying the comments.
+     */
     private ListView listView;
+    /**
+     * DrawerLayout for navigation drawer.
+     */
     private DrawerLayout drawer;
-
+    /**
+     * Called when the activity is starting.
+     * Initializes views, adapters, and sets up listeners.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down
+     *                           then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,12 +103,19 @@ public class CommentActivity extends AppCompatActivity implements NavigationView
         drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
-
+    /**
+     * Show a Snackbar with a help message.
+     */
 
     private void showSnackbar() {
         Snackbar.make(drawer, R.string.snackbar_help, Snackbar.LENGTH_LONG).show();
     }
-
+    /**
+     * Called when an item in the navigation menu is selected.
+     *
+     * @param item The selected item
+     * @return true to display the item as the selected item
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -116,10 +148,17 @@ public class CommentActivity extends AppCompatActivity implements NavigationView
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    /**
+     * Exit the application.
+     */
     private void exitApp() {
         finishAffinity(); // Finish all activities in the app's task stack
         System.exit(0); // Terminate the app process
     }
+    /**
+     * Show a help dialog with information about using the comment section.
+     */
     private void showHelpDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Help");
@@ -127,7 +166,9 @@ public class CommentActivity extends AppCompatActivity implements NavigationView
         builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
         builder.create().show();
     }
-
+    /**
+     * Called when the activity has detected the user's press of the back key.
+     */
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -136,7 +177,9 @@ public class CommentActivity extends AppCompatActivity implements NavigationView
             super.onBackPressed();
         }
     }
-
+    /**
+     * Adapter class for displaying comments in a ListView.
+     */
     public class MyListAdapter extends BaseAdapter {
 
         private ArrayList<Comment> commentsList;
@@ -176,13 +219,24 @@ public class CommentActivity extends AppCompatActivity implements NavigationView
             return convertView;
         }
     }
+        /**
+         * Comment class representing a user's comment.
+         */
         public class Comment {
             private String text;
-
+            /**
+             * Constructor for the Comment class.
+             *
+             * @param text The text of the comment.
+             */
             public Comment(String text) {
                 this.text = text;
             }
-
+            /**
+             * Gets the text of the comment.
+             *
+             * @return The text of the comment.
+             */
             public String getText() {
                 return text;
             }

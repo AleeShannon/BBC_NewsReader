@@ -15,6 +15,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+/**
+ * An AsyncTask for processing news headlines in the background.
+ */
 public class ProcessInBackground extends AsyncTask<String, Void, ArrayList<Headline>> {
     final ProgressDialog progressDialog;
     private final MainActivity mActivity;
@@ -22,6 +25,11 @@ public class ProcessInBackground extends AsyncTask<String, Void, ArrayList<Headl
     ArrayList<Headline> Headlines;
     final ListView listView;
 
+    /**
+     * Constructs a new ProcessInBackground instance with the specified activity.
+     *
+     * @param activity The MainActivity instance.
+     */
     public ProcessInBackground(MainActivity activity) {
         mActivity = activity;
         progressDialog = new ProgressDialog(activity);
@@ -29,6 +37,9 @@ public class ProcessInBackground extends AsyncTask<String, Void, ArrayList<Headl
         listView = activity.findViewById(R.id.list_view);
     }
 
+    /**
+     * Called on the UI thread before doInBackground(Params...).
+     */
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -36,6 +47,12 @@ public class ProcessInBackground extends AsyncTask<String, Void, ArrayList<Headl
         progressDialog.show();
     }
 
+    /**
+     * Processes the news headlines in the background.
+     *
+     * @param strings The input parameters, the first of which should be the URL to fetch the headlines from.
+     * @return An ArrayList of Headline objects, or null if an error occurs.
+     */
     @Override
     protected ArrayList<Headline> doInBackground(String... strings) {
         try {
@@ -57,6 +74,11 @@ public class ProcessInBackground extends AsyncTask<String, Void, ArrayList<Headl
         }
     }
 
+    /**
+     * Called on the UI thread after doInBackground(Params...).
+     *
+     * @param headlines The result of doInBackground(Params...).
+     */
     @Override
     protected void onPostExecute(ArrayList<Headline> headlines) {
         super.onPostExecute(headlines);

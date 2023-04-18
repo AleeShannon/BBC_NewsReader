@@ -12,13 +12,30 @@ import android.widget.TextView;
 import android.util.Log;
 
 import java.util.ArrayList;
-
+/**
+ * Custom ArrayAdapter for displaying headlines.
+ */
 public class HeadlineAdapter extends ArrayAdapter<Headline> {
-
+    /**
+     * The context used to inflate the layout.
+     */
     private Context context;
+    /**
+     * The list of headlines to be displayed.
+     */
     private ArrayList<Headline> headlines;
+    /**
+     * The database used for managing favorites.
+     */
     private FavoritesDB favoritesDb;
 
+    /**
+     * Constructor for the HeadlineAdapter.
+     *
+     * @param context    The context used to inflate the layout.
+     * @param headlines  The list of headlines to be displayed.
+     * @param favoritesDb The database used for managing favorites.
+     */
     public HeadlineAdapter(Context context, ArrayList<Headline> headlines, FavoritesDB favoritesDb) {
         super(context, R.layout.list_item, headlines);
         this.context = context;
@@ -26,6 +43,14 @@ public class HeadlineAdapter extends ArrayAdapter<Headline> {
         this.favoritesDb = favoritesDb;
     }
 
+    /**
+     * Get a View that displays the data at the specified position in the data set.
+     *
+     * @param position    The position of the item within the adapter's data set of the item whose view we want.
+     * @param convertView The old view to reuse, if possible.
+     * @param parent      The parent that this view will eventually be attached to.
+     * @return A View corresponding to the data at the specified position.
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
