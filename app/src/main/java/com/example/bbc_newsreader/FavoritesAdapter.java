@@ -34,7 +34,7 @@ public class FavoritesAdapter extends ArrayAdapter<Headline> {
             viewHolder.titleTextView = convertView.findViewById(R.id.title_TextView);
             viewHolder.dateTextView = convertView.findViewById(R.id.date_TextView);
             viewHolder.descriptionTextView = convertView.findViewById(R.id.description_textView);
-            viewHolder.linkTextView = convertView.findViewById(R.id.link_textView);
+            viewHolder.linkTextView = convertView.findViewById(R.id.link_TextView);
             viewHolder.openArticleButton = convertView.findViewById(R.id.open_article_button);
             viewHolder.favoriteButton = convertView.findViewById(R.id.add_favorites_button);
             convertView.setTag(viewHolder);
@@ -62,6 +62,7 @@ public class FavoritesAdapter extends ArrayAdapter<Headline> {
 
         return convertView;
     }
+
 
     private static class ViewHolder {
         TextView titleTextView;

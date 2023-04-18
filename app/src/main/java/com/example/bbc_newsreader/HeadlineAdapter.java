@@ -34,7 +34,6 @@ public class HeadlineAdapter extends ArrayAdapter<Headline> {
         TextView titleTextView = rowView.findViewById(R.id.title_TextView);
         TextView dateTextView = rowView.findViewById(R.id.date_TextView);
         TextView descriptionTextView = rowView.findViewById(R.id.description_textView);
-        TextView linkTextView = rowView.findViewById(R.id.link_textView);
         Button openArticleButton = rowView.findViewById(R.id.open_article_button);
         Button addFavoritesButton = rowView.findViewById(R.id.add_favorites_button);
 
@@ -43,13 +42,16 @@ public class HeadlineAdapter extends ArrayAdapter<Headline> {
         titleTextView.setText(headline.getTitle());
         dateTextView.setText(headline.getDate());
         descriptionTextView.setText(headline.getDescription());
-        linkTextView.setText(headline.getLink());
 
         openArticleButton.setOnClickListener(v -> {
+            Log.d("HeadlineAdapter", "Opening article: " + headline.getLink());
             Uri uri = Uri.parse(headline.getLink());
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
+            Log.d("HeadlineAdapter", "Open article button clicked");
         });
+
 
         addFavoritesButton.setOnClickListener(v -> {
             if (favoritesDb.addFavorite(headline)) {
