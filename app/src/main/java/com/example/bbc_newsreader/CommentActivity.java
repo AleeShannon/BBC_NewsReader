@@ -3,6 +3,7 @@ package com.example.bbc_newsreader;
 import android.content.Context;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -26,10 +28,12 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+
 /**
- * CommentActivity class represents the activity for user comments.
+ * An activity for users to submit and view comments.
  */
 public class CommentActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
     /**
      * EditText field for entering the comment text.
      */
@@ -55,18 +59,22 @@ public class CommentActivity extends AppCompatActivity implements NavigationView
      */
     private DrawerLayout drawer;
     /**
+     * SharedPreferences used to store and retrieve comments made by users on the comment activity.
+     */
+    private SharedPreferences sharedPreferences;
+
+    /**
      * Called when the activity is starting.
-     * Initializes views, adapters, and sets up listeners.
      *
-     * @param savedInstanceState If the activity is being re-initialized after previously being shut down
-     *                           then this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down,
+     *                           this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
 
-        // Initialize views, adapters, etc.
+    // Initialize views, adapters, etc.
         commentsList = new ArrayList<>();
         myListAdapter = new MyListAdapter(commentsList, this);
 
@@ -74,6 +82,8 @@ public class CommentActivity extends AppCompatActivity implements NavigationView
         submitButton = findViewById(R.id.submitButton);
         listView = findViewById(R.id.cListView);
 
+    // Initialize SharedPreferences
+        sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -83,10 +93,14 @@ public class CommentActivity extends AppCompatActivity implements NavigationView
                 commentsList.add(newComment);
 
 
-                // Update the ListView adapter to reflect the changes
                 myListAdapter.notifyDataSetChanged();
 
-                // Clear the commentEditText after submitting the comment
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("comment", comment);
+                editor.apply();
+
+                Toast.makeText(CommentActivity.this, "Comment submitted", Toast.LENGTH_SHORT).show();
+
                 commentEditText.setText("");
             }
         });
@@ -103,6 +117,9 @@ public class CommentActivity extends AppCompatActivity implements NavigationView
         drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
+
+
+
     /**
      * Show a Snackbar with a help message.
      */
@@ -110,6 +127,7 @@ public class CommentActivity extends AppCompatActivity implements NavigationView
     private void showSnackbar() {
         Snackbar.make(drawer, R.string.snackbar_help, Snackbar.LENGTH_LONG).show();
     }
+
     /**
      * Called when an item in the navigation menu is selected.
      *
@@ -148,7 +166,6 @@ public class CommentActivity extends AppCompatActivity implements NavigationView
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
     /**
      * Exit the application.
      */
@@ -219,27 +236,26 @@ public class CommentActivity extends AppCompatActivity implements NavigationView
             return convertView;
         }
     }
+    public class Comment {
+        private String text;
+
         /**
-         * Comment class representing a user's comment.
+         * Constructor for Comment.
+         *
+         * @param text The text content of the comment.
          */
-        public class Comment {
-            private String text;
-            /**
-             * Constructor for the Comment class.
-             *
-             * @param text The text of the comment.
-             */
-            public Comment(String text) {
-                this.text = text;
-            }
-            /**
-             * Gets the text of the comment.
-             *
-             * @return The text of the comment.
-             */
-            public String getText() {
-                return text;
-            }
+        public Comment(String text) {
+            this.text = text;
+        }
+
+
+        /**
+         * Returns the text content of the comment.
+         *
+         * @return The text content of the comment.
+         */
+        public String getText() {
+            return text;
         }
     }
-
+}
