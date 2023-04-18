@@ -7,14 +7,16 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+
 public class HeadlineParser {
 
     public static Headline parse(String html) {
         try {
+            String escapedHtml = escapeXml(html);
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
             XmlPullParser parser = factory.newPullParser();
-            parser.setInput(new StringReader(html));
+            parser.setInput(new StringReader(escapedHtml));
             ArrayList<Headline> headlines = MyParser.parse(parser);
             if (headlines.size() > 0) {
                 return headlines.get(0);
@@ -24,5 +26,12 @@ public class HeadlineParser {
         }
         return null;
     }
-}
 
+    private static String escapeXml(String input) {
+        return input.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&apos;");
+    }
+}

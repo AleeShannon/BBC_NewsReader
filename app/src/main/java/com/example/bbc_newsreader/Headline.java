@@ -1,6 +1,8 @@
 package com.example.bbc_newsreader;
 
-public class Headline {
+import java.io.Serializable;
+
+public class Headline implements Serializable {
     private String title;
     private String description;
     private String link;

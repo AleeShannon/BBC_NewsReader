@@ -40,11 +40,13 @@
         android:layout_height="wrap_content"
         android:text="Open Article" />
 
+    <!-- Add this Button inside the layout for a single article -->
     <Button
         android:id="@+id/add_favorites_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add to Favorites" />
+        android:text="Favorite" />
+
 </LinearLayout>
 
 </LinearLayout>
